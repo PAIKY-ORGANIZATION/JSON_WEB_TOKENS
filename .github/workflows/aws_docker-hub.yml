@@ -1,0 +1,51 @@
+name: AWS Docker Hub
+
+on:
+  push:
+    #¡ DISABLED FOR NOW
+    #¡ DISABLED FOR NOW
+    #¡ DISABLED FOR NOW
+    #¡ DISABLED FOR NOW
+    #¡ DISABLED FOR NOW
+    #¡ DISABLED FOR NOW
+    #¡ DISABLED FOR NOW
+    branches: [""]  
+
+jobs:
+  paiky_build:
+    runs-on: ubuntu-latest #! REQUIRED FOR DOCKER - IT ALREADY HAS DOCKER INSTALLED
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub                                 #$ Quotes if password contains special characters
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p "${{ secrets.DOCKERHUB_PASSWORD }}" #$ Read Notion, I left awesome content for DockerHub.
+      - name: Build image
+        run: docker build -t priapisman677/test_dockerhub . #$ Read Notion, I left awesome content for DockerHub.
+      - name: Push image to Docker Hub
+        run: docker push priapisman677/test_dockerhub:latest #* We will only pull the :latest in the EC2 instance. 
+
+
+
+
+  #$ In this specific case it is not mandatory to make it to different jobs. It would be mandatorily when you need to execute commands in a different environment (runs-on). However I did it here to separate concerns logically. 
+  deploy:
+    needs: paiky_build
+    runs-on: ubuntu-latest
+    environment: Test_Paiky_Environment #$ Optionally, create  a github environment to avoid duplicating secrets across repositories.
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{secrets.EC2_HOST}} #$ for SSH, don't include port unless not using :22 . Example: 132.84.129.77.
+          username: ${{secrets.EC2_USER}}
+          key: ${{secrets.EC2_SSH_PRIVATE_KEY}} 
+
+          passphrase: ${{ secrets.EC2_SSH_PRIVATE_KEY_PASSPHRASE }} #$ Only if required.
+          #$ "script" is part of appleboy, "|" is part of YAML and means:  “Treat the following indented lines as a single multiline string.”  like "echo \"line 1\"\necho \"line 2\""
+          script: |                                              #$ Quotes if password contains special characters
+            sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p "${{ secrets.DOCKERHUB_PASSWORD }}"
+            sudo docker pull priapisman677/test_dockerhub:latest
+            #* Removing previous CONTAINER
+            sudo docker rm -f node_app || true #$ "|| true" is ONLY to avoid throwing an error if the container is not running.
+            #* Running new CONTAINER
+            sudo docker run -d --name node_app -p 3002:3002  priapisman677/test_dockerhub:latest

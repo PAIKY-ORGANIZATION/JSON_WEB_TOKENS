@@ -1,0 +1,41 @@
+import { Request, Response } from 'express';
+import { LoginSchemaType, SignupSchemaType } from '../../zodSchemas/user-schema.js';
+import { BadRequest } from '../../lib/exceptions.js';
+import { prisma } from '../../lib/db.js';
+import { generateToken } from '../../lib/generate-token.js';
+
+
+export const signup = async (req: Request<{}, {}, SignupSchemaType>,res: Response) => {
+	
+	const { uniqueUsername } = req.body
+
+	const existingUser = await prisma.user.findUnique({
+		where: {
+			uniqueUsername
+		}
+	})
+
+	if (existingUser) throw new BadRequest('User already exists');
+
+	const user = await prisma.user.create({
+		data: {
+			uniqueUsername
+		}
+	})
+
+	generateToken(user.id, res)
+
+
+	res.send({ message: 'Success',} );
+};
+
+export const signin = async (_req: Request<{}, {}, LoginSchemaType>, res: Response) => {
+    
+	res.send({ message: 'Success', data: {  } });
+};
+
+export const triggerBadRequest = async (_req: Request, _res: Response) => {
+	
+    throw new BadRequest('Bad request');
+
+};
