@@ -5,7 +5,7 @@ services:
       - "3002:3002"
     volumes:
       - "./src:/app/src"
-    command: sh -c "npx prisma generate && npx prisma migrate dev && npm run dev_docker"
+    command: sh -c "npx prisma migrate reset &&  npx prisma generate && npx prisma migrate dev && npm run dev_docker"
     depends_on:
       - db
     env_file:
