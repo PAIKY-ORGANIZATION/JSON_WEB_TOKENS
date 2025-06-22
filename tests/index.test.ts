@@ -1,32 +1,52 @@
-import { describe, it, expect, vi, beforeEach, afterAll, test } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterAll, test, beforeAll } from "vitest";
 import request  from 'supertest'
 import app from '../src/app-setup.ts'
+import { prisma } from "../src/lib/db.ts";
+
+const TEST_UNIQUE_USERNAME = 'TEST_USER'
+
+beforeAll(async()=>{
+    await prisma.user.deleteMany({
+        where: {
+            uniqueUsername: TEST_UNIQUE_USERNAME
+        }
+    })
+})
 
 
-
-//! I need to allow the startup to be able to test out of the box.
 
 test('Should load test.env', ()=>{
     expect(process.env.TEST_VAR).toBe('TESTING');
 })
 
 
-test('Should not fail for /signup', async() => {
-    const result = await request(app).post('/api/signup').send({ username: 'Dwati', email: 'Dwati@email.com', password: '12345678' });
-    
-    expect(result.body).toEqual({message: 'Success', data: { username: 'Dwati', email: 'Dwati@email.com', password: '12345678' }});
-});
-
-test('Should not fail for /login', async() => {
-    const result = await request(app).post('/api/signin').send({ email: 'Dwati@email.com', password: '12345678' });
-    
-    expect(result.body).toEqual({message: 'Success', data: { email: 'Dwati@email.com', password: '12345678' }});
-});
 
 
-test('Should fail for /signup', async() => {
-    const result = await request(app).post('/api/signup').send({ username: 'abc', email: 'agugutata', password: '123' });
+test('Upon successful /signup, receive the correct body and receive a cookie', async() => {
+
+    const TEST_FAVORITE_FOOD = 'Pizza'
+
+    const result = await request(app).post('/api/signup').send({ unique_username: TEST_UNIQUE_USERNAME, favorite_food: TEST_FAVORITE_FOOD,});
     
-    expect(result.body.message[0]).toBe("Invalid email");
-    expect(result.body.message[1]).toBe("Password must be at least 6 characters long");
+    //* Test that the received body is correct
+    expect(result.body).toEqual({message: expect.any(String) , data: { favorite_food: TEST_FAVORITE_FOOD }});
+
+    //* Test that the received cookie is correct
+    expect(result.headers['set-cookie'][0]).toContain('EXAMPLE_JWT_COOKIE');
 });
+
+
+
+
+test('Upon successful /signup, user should be saved to the database', async() => { 
+
+    //! This depends on the previous test.
+    const user = await prisma.user.findFirst({
+        where: {
+            uniqueUsername: TEST_UNIQUE_USERNAME
+        }
+    })
+
+    expect(user?.uniqueUsername).toBe(TEST_UNIQUE_USERNAME);
+})
+

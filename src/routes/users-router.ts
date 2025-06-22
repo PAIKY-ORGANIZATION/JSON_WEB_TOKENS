@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validate } from "../middleware/validateBody.js";
 import {  signupSchema } from "../zodSchemas/user-schema.js";
-import { deleteSession, getSavedSession, signup, testCookie } from "../controllers/users/users.js";
+import { deleteSession, getSavedSession, signup, testCookie } from "../controllers/session-controller.js";
 import { sessionMiddleware } from "../middleware/session.js";
 //*types:
 
