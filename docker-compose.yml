@@ -2,12 +2,27 @@ services:
   backend:
     build: .
     ports:
-      - "3001:3001"
-    command: npm run dev_docker
+      - "3002:3002"
     volumes:
-      - "./src:/app/src:ro"
+      - "./src:/app/src"
+    command: sh -c "npx prisma generate && npx prisma migrate dev && npm run dev_docker"
+    depends_on:
+      - db
+    env_file:
+      - ./prisma/docker.env #$ Correctly set db connection on docker container for db
     
   db: 
     image: postgres
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: JSON_WEB_TOKEN
+    volumes:
+      - paiky_data:/var/lib/postgresql/data
+
+
+
+volumes:
+  paiky_data:

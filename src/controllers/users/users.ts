@@ -7,11 +7,11 @@ import { generateToken } from '../../lib/generate-token.js';
 
 export const signup = async (req: Request<{}, {}, SignupSchemaType>,res: Response) => {
 	
-	const { uniqueUsername } = req.body
+	const { unique_username } = req.body
 
 	const existingUser = await prisma.user.findUnique({
 		where: {
-			uniqueUsername
+			uniqueUsername: unique_username
 		}
 	})
 
@@ -19,7 +19,7 @@ export const signup = async (req: Request<{}, {}, SignupSchemaType>,res: Respons
 
 	const user = await prisma.user.create({
 		data: {
-			uniqueUsername
+			uniqueUsername: unique_username
 		}
 	})
 
@@ -31,7 +31,7 @@ export const signup = async (req: Request<{}, {}, SignupSchemaType>,res: Respons
 
 export const signin = async (_req: Request<{}, {}, LoginSchemaType>, res: Response) => {
     
-	res.send({ message: 'Success', data: {  } });
+	// res.send({ message: 'Success', data: {  } });
 };
 
 export const triggerBadRequest = async (_req: Request, _res: Response) => {

@@ -36,6 +36,10 @@
 
 This setup keeps configuration modular and avoids duplication.
 
+6. For Prisma to connect to DB, I placed the connection URL in ./prisma/.env
+    
+    Prisma Loads env automatically if they are in the root of the project or if they are under ./prisma/
+
 
 
 ### API Documentation:
