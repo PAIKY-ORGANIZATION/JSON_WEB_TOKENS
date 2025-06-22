@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { LoginSchemaType, SignupSchemaType } from '../../zodSchemas/user-schema.js';
+import {  SignupSchemaType } from '../../zodSchemas/user-schema.js';
 import { BadRequest } from '../../lib/exceptions.js';
 import { prisma } from '../../lib/db.js';
 import { generateToken } from '../../lib/generate-token.js';
@@ -31,12 +31,11 @@ export const signup = async (req: Request<{}, {}, SignupSchemaType>,res: Respons
 	res.send({ message: 'You have been provided a cookie with your JWT token. Session created!', favorite_food} );
 };
 
-export const signin = async (req: Request<{}, {}, LoginSchemaType>, res: Response) => {
-    
-	const {unique_username} = req.body
 
-	res.send({ message: 'Success', data: {  } });
-};
+export const deleteSession = async(_req: Request, res: Response)=>{
+	res.clearCookie('EXAMPLE_JWT_COOKIE')
+	res.send({message: 'Session deleted successfully!'})
+}
 
 
 export const getSavedSession = async(req: Request, res: Response)=>{
@@ -46,9 +45,9 @@ export const getSavedSession = async(req: Request, res: Response)=>{
 }
 
 
-
-export const triggerBadRequest = async (_req: Request, _res: Response) => {
+export const testCookie = async(_req: Request, res: Response)=>{
 	
-    throw new BadRequest('Bad request');
+	 generateToken('lolol', res)
 
-};
+	 res.send('Cookie created')
+}

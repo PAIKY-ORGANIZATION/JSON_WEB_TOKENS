@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { AnyZodObject, Schema, ZodError } from 'zod';
+import { AnyZodObject, ZodError } from 'zod';
 import {
 	AppError,
 	InternalException,
