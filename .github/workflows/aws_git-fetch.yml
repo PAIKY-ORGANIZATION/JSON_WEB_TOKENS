@@ -22,6 +22,7 @@ jobs:
           script: |
             #* Declaring variables for EC2 (it doesn't have access to "env")
             UNIQUE_APP_NAME="${{ secrets.UNIQUE_APP_NAME }}"  #! UNIQUE_APP_NAME must be all lowercase and without underscores for Docker to accept it.
+            #! If you are using Docker COMPOSE,  you don't need a unique app name for the image name. However, you still need a unique directory name.
             REPO_PATH="${{ github.repository }}"  #$ Example: # gives "dev-miguel/repo-name". We will use this to clone the repo initially. 
             DOCKER_PORT="${{ secrets.DOCKER_PORTS }}"  #! This is the only thing that needs to be changed repo-wise.
             cd ~/vsCodeMain
@@ -33,7 +34,7 @@ jobs:
             git merge origin/master
             #* Build and Run Docker
 
-            #$ Docker compose works directory-wise, so this is safe as long as we are in the correct directory. No need for a unique app/image name.
+            #$ Docker compose works directory-wise, so this is safe as long as we are in the correct directory. No need for a unique image name.
             sudo docker compose down
             sudo docker compose up --build -d
 
