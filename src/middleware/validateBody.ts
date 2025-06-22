@@ -1,17 +1,20 @@
 import { NextFunction, Request, Response } from 'express';
-import { AnyZodObject, ZodError } from 'zod';
-import { AppError, InternalException, UnprocessableEntity } from '../lib/exceptions.js';
+import { AnyZodObject, Schema, ZodError } from 'zod';
+import {
+	AppError,
+	InternalException,
+	UnprocessableEntity,
+} from '../lib/exceptions.js';
 
 //prettier-ignore
-type ControllerFunction = (req: Request<any>, res: Response,next: NextFunction) => Promise<void>;
+type ControllerFunction = (req: Request<any>, res: Response, next: NextFunction) => Promise<void>;
 
+//prettier-ignore
 export const validate = (controller: ControllerFunction, schema?: AnyZodObject,  ) => {
 	return async (req: Request, _res: Response, next: NextFunction) => {
 		try {
 
-			if (schema) {
-				schema.parse(req);
-			}
+			schema && schema.parse(req);
 
 			await controller(req, _res, next);
 
@@ -40,11 +43,7 @@ export const validate = (controller: ControllerFunction, schema?: AnyZodObject, 
 			// 	}
 			// } 
             else {
-				exception = new InternalException(
-					'Internal server error',
-					500,
-					(e as any).message
-				);
+				exception = new InternalException('Internal server error', 500, (e as any).message);
 			}
 
 			next(exception);

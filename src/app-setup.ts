@@ -5,9 +5,11 @@ import { errorMiddleware } from './middleware/error-middleware.js';
 import { reqLogger } from './middleware/req-logger.js';
 import { router as usersRouter } from './routes/users-router.js';
 import { router as loggerRouter } from './routes/logger-router.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 //Custom middleware
 app.use(reqLogger)
