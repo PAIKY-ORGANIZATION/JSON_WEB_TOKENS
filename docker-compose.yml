@@ -22,6 +22,7 @@ services:
     volumes:
       - paiky_data:/var/lib/postgresql/data
 
+  
 
 
 volumes:
