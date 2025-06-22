@@ -32,7 +32,11 @@ export const signup = async (req: Request<{}, {}, SignupSchemaType>,res: Respons
 };
 
 
-export const deleteSession = async(_req: Request, res: Response)=>{
+export const deleteSession = async(req: Request, res: Response)=>{
+
+	const existingCookie = req.cookies['EXAMPLE_JWT_COOKIE']
+	if(!existingCookie) throw new BadRequest('No session found')
+
 	res.clearCookie('EXAMPLE_JWT_COOKIE')
 	res.send({message: 'Session deleted successfully!'})
 }
