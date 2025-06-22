@@ -1,23 +1,22 @@
-# Express Startup example.
+# Cookies and JWTs to store user session information.
+
+### API Documentation and About:
+
+[API Documentation](https://documenter.getpostman.com/view/40182356/2sB2xBEqrP)
 
 
+## How to Use the Application
 
-### Install dependencies:
-
-``` npm i ```
-
-
-### Run with Docker Compose (recommended if you have Docker)
-
+### Run with Docker Compose (recommended if you have Docker, includes a Postgres service and works out of the box):
 ``` docker compose up --build ```
 
-### Run the server locally (requires Node.js installed):
-
-``` npm run dev ```
 
 
-### Run the tests:
+### Run integration test 
+To ensure consistency run tests only in Docker.
+``` docker compose run test ```
 
+You can also test locally for speed. However, you need to set up a Postgres database locally. Make sure to set the correct environment variables under prisma/.env
 ``` npm run test ```
 
 
@@ -32,16 +31,12 @@
 4. Inside of config/, MAKE SURE you rename any "example*....env" by removing the "example" part. 
          Example: example-shared.env -> shared.env
 
-5. Also, MAKE SURE you set the required env variables if they are not set
+5. Also, MAKE SURE you set the required env variables in the -example files if they are not set
 
 This setup keeps configuration modular and avoids duplication.
 
-6. For Prisma to connect to DB, I placed the connection URL in ./prisma/.env
+6. If using the docker-compose setup, docker will load env file for Prisma automatically (./prisma/docker.env).
+
+7. IF USING A LOCAL SETUP: For Prisma to connect to DB , I placed the connection URL in ./prisma/.env
     
     Prisma Loads env automatically if they are in the root of the project or if they are under ./prisma/
-
-
-
-### API Documentation:
-
-[API Documentation](http://localhost......)
