@@ -13,5 +13,6 @@ export const loginSchema = z.object({
     })
 });
 
+
 export type SignupSchemaType = z.infer<typeof signupSchema>['body']
 export type LoginSchemaType = z.infer<typeof loginSchema>['body']
