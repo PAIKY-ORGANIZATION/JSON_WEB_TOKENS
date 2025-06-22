@@ -27,7 +27,7 @@ export const signup = async (req: Request<{}, {}, SignupSchemaType>,res: Respons
 
 	console.log({token});
 	
-	res.send({ message: 'Success',} );
+	res.send({ message: 'You have been provided a cookie with your JWT token. Session created!',} );
 };
 
 export const signin = async (_req: Request<{}, {}, LoginSchemaType>, res: Response) => {
