@@ -16,7 +16,7 @@ router.post('/signup', validate(signup, signupSchema) )
 
 router.get('/get-saved-session', validate(sessionMiddleware), validate(getSavedSession))
 
-router.delete('/deleteSession', validate(deleteSession))
+router.delete('/delete-session', validate(deleteSession))
 
 
 router.get('/test-cookie', testCookie)
