@@ -6,7 +6,7 @@ on:
 jobs:
   run_in_EC2:
     runs-on: ubuntu-latest
-    environment: Test_Paiky_Environment #$ Optionally, create  a github environment to avoid duplicating secrets across repositories.
+    #environment: Test_Paiky_Environment #$ Optionally, create  a github environment to avoid duplicating secrets across repositories.
     steps:
       # - name: ENV TEST
       #   run: echo "$REPO_PATH" && echo "$REPO_NAME"
