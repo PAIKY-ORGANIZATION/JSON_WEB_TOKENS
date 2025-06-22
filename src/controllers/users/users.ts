@@ -23,9 +23,10 @@ export const signup = async (req: Request<{}, {}, SignupSchemaType>,res: Respons
 		}
 	})
 
-	generateToken(user.id, res)
+	const token = generateToken(user.id, res)
 
-
+	console.log({token});
+	
 	res.send({ message: 'Success',} );
 };
 

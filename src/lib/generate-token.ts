@@ -10,4 +10,6 @@ export const generateToken = (userId: string, res: Response) =>{
         sameSite: 'strict',
     })
 
+    return token
+
 }
