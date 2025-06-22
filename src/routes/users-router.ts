@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validate } from "../middleware/validateBody.js";
 import {  signupSchema } from "../zodSchemas/user-schema.js";
-import { deleteSession, getSavedSession, signup, testCookie } from "../controllers/session-controller.js";
+import { deleteSession, getSavedSession, signup} from "../controllers/session-controller.js";
 import { sessionMiddleware } from "../middleware/session.js";
 //*types:
 
@@ -19,4 +19,3 @@ router.get('/get-saved-session', validate(sessionMiddleware), validate(getSavedS
 router.delete('/delete-session', validate(deleteSession))
 
 
-router.get('/test-cookie', testCookie)
