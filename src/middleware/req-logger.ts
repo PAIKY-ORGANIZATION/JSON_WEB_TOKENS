@@ -17,12 +17,7 @@ export const reqLogger = async(req: Request, _res: Response, next: NextFunction)
     
     //$  TEST_UNPARSED_IP is only available in test environment
     //$  Under tests, IP will be the Google IP (::ffff:8.8.8.8) to get a log that says "US"
-    const unparsedIp = process.env.TEST_UNPARSED_IP || req.ip
-    
-    console.log({unparsedIp});
-
-    console.log(req.headers['x-forwarded-for']);
-    
+    const unparsedIp = process.env.TEST_UNPARSED_IP || req.headers['x-forwarded-for'] as string
 
     
 
