@@ -13,7 +13,13 @@ import fs from 'node:fs'
 export const reqLogger = async(req: Request, _res: Response, next: NextFunction)=>{
 
     
+    console.log('One:   ',   req.headers['x-forwarded-for']);
+    console.log('Two:   ',   req.socket.remoteAddress);
+    console.log('Three: ',   req.headers['x-real-ip']);
     
+    
+
+
     
     //$  TEST_UNPARSED_IP is only available in test environment
     //$  Under tests, IP will be the Google IP (::ffff:8.8.8.8) to get a log that says "US"
