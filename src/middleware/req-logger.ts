@@ -12,24 +12,16 @@ import fs from 'node:fs'
 //prettier-ignore
 export const reqLogger = async(req: Request, _res: Response, next: NextFunction)=>{
 
-    
-    console.log('One:   ',   req.headers['x-forwarded-for']);
-    console.log('Two:   ',   req.socket.remoteAddress);
-    console.log('Three: ',   req.headers['x-real-ip']);
-    
-    
-
-
-    
-    //$  TEST_UNPARSED_IP is only available in test environment
-    //$  Under tests, IP will be the Google IP (::ffff:8.8.8.8) to get a log that says "US"
+    //%  TEST_UNPARSED_IP is only available in test environment
+    //%  Under tests, IP will be the Google IP (::ffff:8.8.8.8) to get a log that says "US"
     const unparsedIp = process.env.TEST_UNPARSED_IP ||
         req.headers['x-forwarded-for'] as string || 
-        req.socket.remoteAddress ||
         req.headers['x-real-ip'] as string
 
     
-
+    //% I have seen that when the app is in AWS (Nginx) the IP is "well" formatted like "123.123.123.123"
+    //% When trying locally, the IP is usually formatted like "::ffff:123.123.123.123"
+    //% Here we handle both cases.
     const ip = unparsedIp?.split('::ffff:')[1] || unparsedIp?.split('::')[1] || unparsedIp
 
     console.log({ip});
