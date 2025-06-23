@@ -22,6 +22,9 @@ export const reqLogger = async(req: Request, _res: Response, next: NextFunction)
     
 
     const ip = unparsedIp?.split('::ffff:')[1] || unparsedIp?.split('::')[1] || ''
+
+    console.log(ip);
+    
     
     let response
     try{
