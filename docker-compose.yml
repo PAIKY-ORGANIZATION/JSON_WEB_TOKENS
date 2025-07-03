@@ -28,7 +28,8 @@ services:
     depends_on:
       - db
     env_file:
-      - ./prisma/docker.env #$ Correctly set db connection on docker container for db
+      #¡ REMOVE THIS LOOOOOOOL TEST
+      # - ./prisma/docker.envLOOOOOOL #$ Correctly set db connection on docker container for db
   
 
 
