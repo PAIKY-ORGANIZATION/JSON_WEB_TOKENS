@@ -11,6 +11,7 @@ services:
     env_file:
       - ./prisma/docker.env #$ Correctly set db connection on docker container for db
     
+    
   db: 
     image: postgres
     ports:
