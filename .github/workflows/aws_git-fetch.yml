@@ -47,7 +47,7 @@ jobs:
             EXIT_CODE=$? #$ This captures the exit code of the last command
             if [ $EXIT_CODE -ne 0 ]; then
               echo "Test container failed with exit code $EXIT_CODE"
-              exit $EXIT_CODE
+              exit $EXIT_CODE #$ This exits the ENTIRE GitHub Action with the same exit code.
             fi
 
             sudo docker compose up --build -d
