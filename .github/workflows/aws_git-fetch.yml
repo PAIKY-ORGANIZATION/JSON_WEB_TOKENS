@@ -42,6 +42,14 @@ jobs:
             #$ Docker compose works directory-wise, so this is safe as long as we are in the correct directory. No need for a unique image name.
             sudo docker compose down
             sudo docker compose up --build --abort-on-container-exit --exit-code-from test test #* This will cause the GitHub Action to fail if the Test fails. Notice how we are not using "-d". We DO NEED to use -d below
+            
+            #* Handling docker-test errors
+            EXIT_CODE=$? #$ This captures the exit code of the last command
+            if [ $EXIT_CODE -ne 0 ]; then
+              echo "Test container failed with exit code $EXIT_CODE"
+              exit $EXIT_CODE
+            fi
+
             sudo docker compose up --build -d
            
 
