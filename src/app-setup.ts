@@ -2,7 +2,7 @@ import './bootstrap.js' // This  needs to be imported at the top in order for en
 
 import express from 'express';
 import { errorMiddleware } from './middleware/error-middleware.js';
-import { reqLogger } from './middleware/req-logger.js';
+import reqLoggerExpress  from 'req-logger-express';
 import { router as usersRouter } from './routes/users-router.js';
 import { router as loggerRouter } from './routes/logger-router.js';
 import cookieParser from 'cookie-parser';
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 //Custom middleware
-app.use(reqLogger)
+app.use(reqLoggerExpress)
 
 //Routes
 app.use('/api',  usersRouter);
